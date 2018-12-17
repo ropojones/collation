@@ -5,6 +5,16 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gol.collation.web", "gol.collation.web\gol.collation.web.csproj", "{1EFFB85C-70DA-4BB2-84DA-8C578FC65DE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gol.collation.data", "gol.collation.data\gol.collation.data.csproj", "{DD8A69D9-1E9F-4AAE-A5DC-AA71F4922EC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gol.collation.domain", "gol.collation.domain\gol.collation.domain.csproj", "{40ADC6A7-23F9-457C-AB7D-812AF7865B16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gol.collation.core", "gol.collation.core\gol.collation.core.csproj", "{913B1A9A-26B9-46A9-83E0-F1D435ACBE0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gol.collation.api", "gol.collation.api\gol.collation.api.csproj", "{1B6FE6DD-ECD0-488F-A7D1-73E96DD7C274}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gol.collation.resources", "gol.collation.resources\gol.collation.resources.csproj", "{FD995F99-CF4D-433F-BF9A-9B9491B5E3A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +25,26 @@ Global
 		{1EFFB85C-70DA-4BB2-84DA-8C578FC65DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EFFB85C-70DA-4BB2-84DA-8C578FC65DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EFFB85C-70DA-4BB2-84DA-8C578FC65DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD8A69D9-1E9F-4AAE-A5DC-AA71F4922EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD8A69D9-1E9F-4AAE-A5DC-AA71F4922EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD8A69D9-1E9F-4AAE-A5DC-AA71F4922EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD8A69D9-1E9F-4AAE-A5DC-AA71F4922EC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40ADC6A7-23F9-457C-AB7D-812AF7865B16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40ADC6A7-23F9-457C-AB7D-812AF7865B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40ADC6A7-23F9-457C-AB7D-812AF7865B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40ADC6A7-23F9-457C-AB7D-812AF7865B16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{913B1A9A-26B9-46A9-83E0-F1D435ACBE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{913B1A9A-26B9-46A9-83E0-F1D435ACBE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{913B1A9A-26B9-46A9-83E0-F1D435ACBE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{913B1A9A-26B9-46A9-83E0-F1D435ACBE0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B6FE6DD-ECD0-488F-A7D1-73E96DD7C274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B6FE6DD-ECD0-488F-A7D1-73E96DD7C274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B6FE6DD-ECD0-488F-A7D1-73E96DD7C274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B6FE6DD-ECD0-488F-A7D1-73E96DD7C274}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD995F99-CF4D-433F-BF9A-9B9491B5E3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD995F99-CF4D-433F-BF9A-9B9491B5E3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD995F99-CF4D-433F-BF9A-9B9491B5E3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD995F99-CF4D-433F-BF9A-9B9491B5E3A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

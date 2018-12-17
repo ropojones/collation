@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="en.resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>en.resource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="fr.resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>fr.resource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="pt.resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>pt.resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="en.resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>en.resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="fr.resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>fr.resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="pt.resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>pt.resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
