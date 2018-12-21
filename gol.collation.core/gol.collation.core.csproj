@@ -5,8 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Utility\" />
-    <Folder Include="Models\Users\" />
+    <Folder Include="Entities\Utility\" />
+    <Folder Include="Entities\Users\" />
+    <Folder Include="ResponseModels\" />
   </ItemGroup>
 
   <ItemGroup>

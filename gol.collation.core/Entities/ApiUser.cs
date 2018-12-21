@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace gol.collation.data.Models
+namespace gol.collation.core.Entities
 {
     public class ApiUser : IdentityUser
     {
