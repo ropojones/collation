@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace gol.collation.core.RequestModels
 {
-    public class PasswordLoginRequest
+    public class LoginRequest
     {
         [Required]
         public string Username { get; set; }

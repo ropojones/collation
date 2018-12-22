@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
+using gol.collation.api.Helpers;
 using gol.collation.core.Entities;
 using gol.collation.core.Models;
 using gol.collation.data;
@@ -13,11 +15,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace gol.collation.api
 {
     public class Startup
     {
+        private const string TotalAccessCORSPolicy = "TotalAccess";
         public readonly IConfiguration _config;
         private readonly ILogger<Startup> _logger;
 
@@ -33,13 +38,30 @@ namespace gol.collation.api
             //add the configuration service
             services.AddSingleton(_config);
 
+            // Add DbContext service
             services.AddDbContext<CollationContext>(options =>
             {
                 options.UseSqlServer(_config.GetConnectionString("CollationDBConnection"));
             });
 
             //Add Identity Service
-            services.AddIdentity<ApiUser, IdentityRole>().AddEntityFrameworkStores<CollationContext>().AddSignInManager<ApiUser>();
+            services.AddIdentity<ApiUser, IdentityRole>()
+                .AddEntityFrameworkStores<CollationContext>()
+                .AddSignInManager<ApiUser>();
+
+            //Add Authentication service
+            services.AddAuthentication().AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = _config["Tokens:Issuer"],
+                    ValidAudience = _config["Tokens:Audience"],
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"])),
+                    ValidateLifetime = true
+                };
+            });
 
             // Setup Identity Functionality
             services.ConfigureApplicationCookie(options =>
@@ -67,13 +89,23 @@ namespace gol.collation.api
             // Add cross origin support to specify API access levels from third parties
             services.AddCors(setupActn =>
             {
-                setupActn.AddPolicy("TotalAccess", policyConfig =>
+                setupActn.AddPolicy(TotalAccessCORSPolicy, policyConfig =>
                 {
                     policyConfig.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                 });
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(option =>
+                {
+                    // Avoid serializing circular references of models in JSON
+                    option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
+
+            //map Tokens config Section to an object that can be injected in controllers
+            var tokensConfig = _config.GetSection("ApiRequestUris");
+            //create the injectable servcice
+            var conf = services.Configure<TokensConfigSection>(tokensConfig);
 
             //Add business specific services
             services.AddScoped<IAuthService, AuthService>();
@@ -90,9 +122,10 @@ namespace gol.collation.api
             {
                 app.UseHsts();
             }
+            app.UseCors(TotalAccessCORSPolicy);
             // Use configured identity service
-            AuthAppBuilderExtensions.UseAuthentication(app);
-            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            //AuthAppBuilderExtensions.UseAuthentication(app);
             app.UseMvc();
         }
     }
