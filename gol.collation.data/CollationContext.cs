@@ -1,6 +1,7 @@
 ﻿//using Microsoft.EntityFrameworkCore;
 using gol.collation.core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,16 @@ namespace gol.collation.data
         }
 
         public DbSet<ApiUser> ApiUsers { get; set; }
+    }
+
+    public class CollationContextFactory : IDesignTimeDbContextFactory<CollationContext>
+    {
+        CollationContext IDesignTimeDbContextFactory<CollationContext>.CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<CollationContext>();
+            optionsBuilder.UseSqlServer("Server=LAPTOP-HU4OB30A\\MSSQL14;Database=CollationDB;User Id=sa;Password=password1; MultipleActiveResultSets = true");
+
+            return new CollationContext(optionsBuilder.Options);
+        }
     }
 }

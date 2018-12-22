@@ -88,7 +88,7 @@ namespace gol.collation.api.Controllers
             {
                 _logger.LogError(ex, "Exception thrown while generating JWT");
             }
-            return BadRequest("Failed to generate token")
+            return BadRequest("Failed to generate token");
         }
     }
 }

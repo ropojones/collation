@@ -139,10 +139,17 @@ namespace gol.collation.api
                 //create scope to call DataSeeder
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    //seed database
-                    var seeder = scope.ServiceProvider.GetService<DbSeeder>();
-                    //since configure is synchronous we cannot use await
-                    seeder.SeedData().Wait();
+                    try
+                    {
+                        //seed database
+                        var seeder = scope.ServiceProvider.GetService<DbSeeder>();
+                        //since configure is synchronous we cannot use await
+                        seeder.SeedData().Wait();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        _logger.LogError(ex, "DbSeeder Execution failed");
+                    }
                 }
             }
         }
