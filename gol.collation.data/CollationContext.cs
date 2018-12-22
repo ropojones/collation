@@ -1,4 +1,5 @@
 ﻿//using Microsoft.EntityFrameworkCore;
+using gol.collation.core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,7 @@ namespace gol.collation.data
         {
 
         }
+
+        public DbSet<ApiUser> ApiUsers { get; set; }
     }
 }

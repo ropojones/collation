@@ -7,6 +7,7 @@ using gol.collation.data;
 using gol.collation.domain.Interfaces;
 using gol.collation.domain.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -50,7 +51,11 @@ namespace gol.collation.api
                 .AddSignInManager<ApiUser>();
 
             //Add Authentication service
-            services.AddAuthentication().AddJwtBearer(options =>
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
@@ -127,6 +132,19 @@ namespace gol.collation.api
             app.UseAuthentication();
             //AuthAppBuilderExtensions.UseAuthentication(app);
             app.UseMvc();
+
+            // Seed data for dev environment
+            if (env.IsDevelopment())
+            {
+                //create scope to call DataSeeder
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    //seed database
+                    var seeder = scope.ServiceProvider.GetService<DbSeeder>();
+                    //since configure is synchronous we cannot use await
+                    seeder.SeedData().Wait();
+                }
+            }
         }
     }
 }
