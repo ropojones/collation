@@ -48,7 +48,7 @@ namespace gol.collation.api
             //Add Identity Service
             services.AddIdentity<ApiUser, IdentityRole>()
                 .AddEntityFrameworkStores<CollationContext>()
-                .AddSignInManager<ApiUser>();
+                .AddSignInManager<SignInManager<ApiUser>>();
 
             //Add Authentication service
             services.AddAuthentication(options =>
@@ -117,7 +117,10 @@ namespace gol.collation.api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env,
+            UserManager<ApiUser> userManager,
+            CollationContext context)
         {
             if (env.IsDevelopment())
             {
@@ -136,20 +139,13 @@ namespace gol.collation.api
             // Seed data for dev environment
             if (env.IsDevelopment())
             {
-                //create scope to call DataSeeder
-                using (var scope = app.ApplicationServices.CreateScope())
+                try
                 {
-                    try
-                    {
-                        //seed database
-                        var seeder = scope.ServiceProvider.GetService<DbSeeder>();
-                        //since configure is synchronous we cannot use await
-                        seeder.SeedData().Wait();
-                    }
-                    catch (System.Exception ex)
-                    {
-                        _logger.LogError(ex, "DbSeeder Execution failed");
-                    }
+                    DbSeeder.SeedData(context, userManager);
+                }
+                catch (System.Exception ex)
+                {
+                    _logger.LogError(ex, "DbSeeder Execution failed");
                 }
             }
         }

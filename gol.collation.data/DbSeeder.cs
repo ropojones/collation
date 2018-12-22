@@ -9,44 +9,27 @@ using System.Threading.Tasks;
 
 namespace gol.collation.data
 {
-    public class DbSeeder
+    public static class DbSeeder
     {
         private const string SEED_USER_ERROR = "Failed to create seed user";
         private const string SEED_USERNAME = "testuser";
-        private readonly UserManager<ApiUser> _userManager;
-        private readonly RoleManager<ApiUser> _rolemanager;
-        private readonly CollationContext _ctx;
-        private readonly ILogger<DbSeeder> _logger;
 
-        public DbSeeder(UserManager<ApiUser> userManager, 
-            RoleManager<ApiUser> roleManager,
-            CollationContext ctx,
-            ILogger<DbSeeder> logger)
+        public static void SeedData(CollationContext ctx,
+            UserManager<ApiUser> userManager)
         {
-            _userManager = userManager;
-            _rolemanager = roleManager;
-            _ctx = ctx;
-            _logger = logger;
-        }
+            ctx.Database.EnsureCreated();
 
-        public async Task SeedData()
-        {
-            await _ctx.Database.EnsureCreatedAsync();
-
-            //check if user exist before creating user
-            var userSeed = await _userManager.FindByNameAsync(SEED_USERNAME);
-            if (userSeed == null)
+            if (userManager.FindByNameAsync(SEED_USERNAME).Result == null)
             {
-                userSeed = new ApiUser
+                var userSeed = new ApiUser
                 {
                     UserName = SEED_USERNAME,
                     Email = "testuser@test.com",
                 };
 
-                var result = await _userManager.CreateAsync(userSeed, "P@ssword1!");
+                var result = userManager.CreateAsync(userSeed, "P@ssword1!").Result;
                 if (result != IdentityResult.Success)
                 {
-                    _logger.LogError(SEED_USER_ERROR);
                     throw new InvalidOperationException(SEED_USER_ERROR);
                 }
             }

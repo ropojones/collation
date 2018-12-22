@@ -1,5 +1,6 @@
 ﻿//using Microsoft.EntityFrameworkCore;
 using gol.collation.core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace gol.collation.data
 {
-    public class CollationContext : DbContext
+    public class CollationContext : IdentityDbContext<ApiUser>
     {
         public CollationContext(DbContextOptions<CollationContext> options) : base(options)
         {
