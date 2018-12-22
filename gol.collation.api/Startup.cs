@@ -50,7 +50,13 @@ namespace gol.collation.api
                 .AddEntityFrameworkStores<CollationContext>()
                 .AddSignInManager<SignInManager<ApiUser>>();
 
-            //Add Authentication service
+            //map Tokens appsettings Section to an object that can be injected in controllers
+            var tokensConfig = _config.GetSection("Tokens");
+            //create the injectable servcice
+            services.Configure<TokensConfigSection>(tokensConfig);
+
+            // Create an object of the mapped tokens appsettings section
+            var tokensSection = tokensConfig.Get<TokensConfigSection>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,10 +66,10 @@ namespace gol.collation.api
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = _config["Tokens:Issuer"],
-                    ValidAudience = _config["Tokens:Audience"],
+                    ValidIssuer = tokensSection.Issuer,
+                    ValidAudience = tokensSection.Audience,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokensSection.Key)),
                     ValidateLifetime = true
                 };
             });
@@ -106,11 +112,6 @@ namespace gol.collation.api
                     // Avoid serializing circular references of models in JSON
                     option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
-
-            //map Tokens config Section to an object that can be injected in controllers
-            var tokensConfig = _config.GetSection("ApiRequestUris");
-            //create the injectable servcice
-            var conf = services.Configure<TokensConfigSection>(tokensConfig);
 
             //Add business specific services
             services.AddScoped<IAuthService, AuthService>();

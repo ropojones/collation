@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using gol.collation.api.Helpers;
+using Microsoft.Extensions.Options;
 
 namespace gol.collation.api.Controllers
 {
@@ -28,11 +29,11 @@ namespace gol.collation.api.Controllers
 
         public AuthController(IAuthService authService, 
             ILogger<AuthController> logger,
-            TokensConfigSection tokensConfig)
+            IOptions<TokensConfigSection> tokensConfig)
         {
             _authService = authService;
             _logger = logger;
-            _tokensConfig = tokensConfig;
+            _tokensConfig = tokensConfig.Value;
         }
 
         [HttpPost("login")]
@@ -51,7 +52,7 @@ namespace gol.collation.api.Controllers
             return BadRequest("Failed to login");
         }
 
-        [HttpPost("token")]
+        [HttpPost("Token")]
         public IActionResult CreateToken([FromBody] LoginRequest request)
         {
             try
@@ -67,13 +68,13 @@ namespace gol.collation.api.Controllers
                     }.Union(userClaims);
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokensConfig.Key));
-                    var cred = new SigningCredentials(key, SecurityAlgorithms.Aes128CbcHmacSha256);
+                    var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                     var token = new JwtSecurityToken(
                         issuer: _tokensConfig.Issuer,
                         audience: _tokensConfig.Audience,
                         claims: claims,
-                        expires: DateTime.UtcNow.AddMinutes(60),
+                        expires: DateTime.UtcNow.AddMinutes(180),
                         signingCredentials: cred
                         );
 
